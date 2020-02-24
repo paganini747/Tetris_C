@@ -29,7 +29,7 @@ clock_t start_t,end_t;	//获取系统时间
 void GameOver();
 void Welcom();
 /****************************************
- * 获取屏幕光标位置
+ * 确定屏幕光标位置
 ****************************************/
 void gotoxy(int x, int y)
 {
@@ -37,6 +37,17 @@ void gotoxy(int x, int y)
  	pos.X = x;//横坐标
  	pos.Y = y;//纵坐标
  	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+/****************************************
+* 隐藏屏幕光标
+****************************************/
+void HideCursor()
+{
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO CursorInfo;
+    GetConsoleCursorInfo(handle, &CursorInfo);//获取控制台光标信息
+    CursorInfo.bVisible = 0; //隐藏控制台光标
+    SetConsoleCursorInfo(handle, &CursorInfo);//设置控制台光标状态
 }
 /****************************************
  * 生成俄罗斯方块 
@@ -155,7 +166,6 @@ void DrawNew()
 				gotoxy(FrameX+2*X-4+2*j,FrameY+Y-2+i);
 				printf("■");
 			}
-
 }
 /****************************************
  * 旋转俄罗斯方块 
@@ -323,7 +333,6 @@ if(_kbhit())
 					CleanOld();
 					Transform();
 					DrawNew();	
-					gotoxy(0,0);
 					}
 				}
 				else if(ch==75)//<-向左 
@@ -334,7 +343,6 @@ if(_kbhit())
 					CleanOld();
 					X--;
 		        	DrawNew();	
-		        	gotoxy(0,0);
 		    		}
 		    	}
 				else if(ch==77)//->向右 
@@ -345,7 +353,6 @@ if(_kbhit())
 					CleanOld();
 					X++;
 		        	DrawNew();
-		        	gotoxy(0,0);
 					}
 				}
 				else if(ch==80)//向下 
@@ -356,7 +363,6 @@ if(_kbhit())
 					CleanOld();
 					Y++;
 					DrawNew();
-					gotoxy(0,0);
 					}
 				}
 				else if(ch==32)//暂停
@@ -547,7 +553,6 @@ int i=0,j=0,temp[5][5];
 			if(temp[i][j])printf("■");
 			else printf("  ");
 		}	
-		gotoxy(0,0);
 }
 /****************************************
  * 游戏开始函数 
@@ -575,7 +580,6 @@ void GamePlay()
 					CleanOld();
 					Y++;
 					DrawNew();
-					gotoxy(0,0);
 				}
 				//JustForDebugging();	
 				if(!down)
@@ -706,6 +710,7 @@ void Regulation()
 void Welcom()
 {
 	int n=0;
+    HideCursor();
 	gotoxy(28,3);
     printf("俄  罗  斯  方  块\n");	
     
@@ -749,7 +754,7 @@ void Welcom()
 	gotoxy(40,15);
 	printf("4.退出");
 	gotoxy(25,18);
-	printf("请选择[1 2 3 4]:[ ]\b\b");
+	printf("请选择[1 2 3 4]:");
     scanf_s("%d", &n);    			//输入选项
     switch (n)
     {
