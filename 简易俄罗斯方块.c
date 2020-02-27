@@ -3,19 +3,21 @@
 #include<time.h>
 #include<conio.h>
 #include<windows.h>
+#include<Mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 
 #define FrameX  16  //游戏窗口左上角的X轴坐标
 #define FrameY  4  //游戏窗口左上角的Y轴坐标
 #define height  20 //游戏窗口的高度
 #define width   10//游戏窗口的宽度 
 #define StartX  1+width/2//俄罗斯方块中心出现位置横坐标 
-#define StartY  2	 //俄罗斯方块中心出现位置横坐标 
+#define StartY  2//俄罗斯方块中心出现位置纵坐标 
 
 int s[5][5]={0};//俄罗斯方块生成数组 
 int a[height+2][width+2]={0};//俄罗斯方块打印数组
 int flag_old=0;	//当前俄罗斯方块序号 
 int flag_next=0;//下一个俄罗斯方块序号 
-int left=1;	 //1为可左移，0为不可左移 
+int left=1;	//1为可左移，0为不可左移 
 int right=1;//1为可右移，0为不可右移
 int down=1;	//1为可下移，0为不可下移
 int trans=1;//1为可旋转，0为不可旋转 
@@ -24,6 +26,7 @@ int Y=StartY;//中心方块纵坐标
 int Line=0;	//消除的行数 
 int Level=1;//等级
 int Score=0;//积分
+int Music=1;
 clock_t start_t,end_t;	//获取系统时间 
 
 void GameOver();
@@ -321,60 +324,24 @@ switch(flag_old)
 void KeyControl()
 {
 int i=0,j=0,ch=0;
-if(_kbhit())       				  	 	
-   			{
-    			ch=_getch();
-    			Judge_MoveAndTansform();
-    			if(ch==72)//变形
-				{
-					Judge_MoveAndTansform();
-					if(trans)
-					{	
-					CleanOld();
-					Transform();
-					DrawNew();	
-					}
-				}
-				else if(ch==75)//<-向左 
-				{
-					Judge_MoveAndTansform();
-					if(left)
-					{			
-					CleanOld();
-					X--;
-		        	DrawNew();	
-		    		}
-		    	}
-				else if(ch==77)//->向右 
-				{
-					Judge_MoveAndTansform();
-					if(right)
-					{	
-					CleanOld();
-					X++;
-		        	DrawNew();
-					}
-				}
-				else if(ch==80)//向下 
-				{
-				Judge_MoveAndTansform();
-					if(down)
-					{			 
-					CleanOld();
-					Y++;
-					DrawNew();
-					}
-				}
-				else if(ch==32)//暂停
-				{
-					_getch();
-				} 
-				else if(ch==27)//退出 
-				{
-					system("cls");
-					exit(0);
-				} 
-			}
+if(_kbhit())       				  	
+	{ 
+    	ch=_getch();
+    	Judge_MoveAndTansform();
+        switch (ch)
+            {
+            	case 72:if(trans){CleanOld();Transform();DrawNew();}break;//变形
+            	case 75:if(left){CleanOld();X--;DrawNew();}break;//向上
+                case 77:if(right){CleanOld();X++;DrawNew();}break;//->向右
+                case 80:if (down){ CleanOld();Y++; DrawNew(); }break;//向下
+                case 32:_getch(); break;//空格键 暂停游戏
+                case 9: Music = -Music;
+                        if(Music>0)mciSendString(TEXT("resume Song1"), NULL, 0, NULL); 
+                        else mciSendString(TEXT("pause Song1"), NULL, 0, NULL);break;//tap键 暂停歌曲
+                case 27:system("cls");exit(0);break;//ESC键 退出 
+                default:break;
+            }
+	}
 }
 /****************************************
  * 打印俄罗斯方块边框 
@@ -559,7 +526,7 @@ int i=0,j=0,temp[5][5];
 ****************************************/
 void GamePlay()
 {  
-	system("cls");		   
+	system("cls");	
 	Initialization();
 	DrwaGameframe();
 	MakeTetris();
@@ -665,7 +632,7 @@ void Explation()
     gotoxy(18,13);
     printf("tip4: 按空格键暂停游戏，再按空格键继续");
     gotoxy(18,15);
-    printf("tip5: 按ESC退出游戏");
+    printf("tip5: 按ESC退出游戏，按tap键暂停/播放音乐");
     _getch();                //按任意键返回主界面
     system("cls");
     Welcom();
@@ -755,6 +722,8 @@ void Welcom()
 	printf("4.退出");
 	gotoxy(25,18);
 	printf("请选择[1 2 3 4]:");
+    mciSendString(TEXT("open D:\\Music\\甩葱歌.mp3 alias Song1"), NULL, 0, NULL);
+    mciSendString(TEXT("play Song1 repeat"), NULL, 0, NULL);
     scanf_s("%d", &n);    			//输入选项
     switch (n)
     {

@@ -3,13 +3,15 @@
 #include<time.h>
 #include<conio.h>
 #include<windows.h>
+#include<Mmsystem.h>
+#pragma comment(lib,"winmm.lib")
 
 #define FrameX  16  //游戏窗口左上角的X轴坐标
 #define FrameY  4  //游戏窗口左上角的Y轴坐标
 #define height  20 //游戏窗口的高度
-#define width   10//游戏窗口的宽度 
+#define width   20//游戏窗口的宽度 
 #define StartX  1+width/2//俄罗斯方块中心出现位置横坐标 
-#define StartY  2	 //俄罗斯方块中心出现位置横坐标 
+#define StartY  2//俄罗斯方块中心出现位置纵坐标 
 
 #define color1	2	//绿  		L形                      //黑色=0     蓝色=1      绿色=2      浅绿色=3
 #define color2	8	//灰  		T形                      //红色=4     紫色=5      黄色=6      白色=7
@@ -21,7 +23,7 @@ int s[5][5]={0};//俄罗斯方块生成数组
 int a[height+2][width+2]={0};//俄罗斯方块打印数组
 int flag_old=0;	//当前俄罗斯方块序号 
 int flag_next=0;//下一个俄罗斯方块序号 
-int left=1;	 //1为可左移，0为不可左移 
+int left=1;	//1为可左移，0为不可左移 
 int right=1;//1为可右移，0为不可右移
 int down=1;	//1为可下移，0为不可下移
 int trans=1;//1为可旋转，0为不可旋转 
@@ -30,6 +32,7 @@ int Y=StartY;//中心方块纵坐标
 int Line=0;	//消除的行数 
 int Level=1;//等级
 int Score=0;//积分
+int Music = 1;//音乐继续或暂停的判断位
 clock_t start_t,end_t;	//获取系统时间 
 
 void GameOver();
@@ -55,9 +58,12 @@ void HideCursor()
     CursorInfo.bVisible = 0; //隐藏控制台光标
     SetConsoleCursorInfo(handle, &CursorInfo);//设置控制台光标状态
 }
+/****************************************
+* 控制台颜色选择函数
+****************************************/
 int Color(int c)
 {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);        //更改文字颜色
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);//更改文字颜色
 	return 0;
 }
 /****************************************
@@ -341,55 +347,19 @@ if(_kbhit())
    			{
     			ch=_getch();
     			Judge_MoveAndTansform();
-    			if(ch==72)//变形
-				{
-					Judge_MoveAndTansform();
-					if(trans)
-					{	
-					CleanOld();
-					Transform();
-					DrawNew();	
-					}
-				}
-				else if(ch==75)//<-向左 
-				{
-					Judge_MoveAndTansform();
-					if(left)
-					{			
-					CleanOld();
-					X--;
-		        	DrawNew();	
-		    		}
-		    	}
-				else if(ch==77)//->向右 
-				{
-					Judge_MoveAndTansform();
-					if(right)
-					{	
-					CleanOld();
-					X++;
-		        	DrawNew();
-					}
-				}
-				else if(ch==80)//向下 
-				{
-				Judge_MoveAndTansform();
-					if(down)
-					{			 
-					CleanOld();
-					Y++;
-					DrawNew();
-					}
-				}
-				else if(ch==32)//暂停
-				{
-					_getch();
-				} 
-				else if(ch==27)//退出 
-				{
-					system("cls");
-					exit(0);
-				} 
+                switch (ch)
+                {
+                case 72:if(trans){CleanOld();Transform();DrawNew();}break;//变形
+                case 75:if(left){CleanOld();X--;DrawNew();}break;//向上
+                case 77:if(right){CleanOld();X++;DrawNew();}break;//->向右
+                case 80:if (down){ CleanOld();Y++; DrawNew(); }break;//向下
+                case 32:_getch(); break;//空格键 暂停游戏
+                case 9: Music = -Music;
+                        if(Music>0)mciSendString(TEXT("resume Song1"), NULL, 0, NULL); 
+                        else mciSendString(TEXT("pause Song1"), NULL, 0, NULL);break;//tap键 暂停歌曲
+                case 27:system("cls");exit(0);break;//ESC键 退出 
+                default:break;
+                }
 			}
 }
 /****************************************
@@ -503,23 +473,22 @@ void JustForDebugging()
 	int i=0,j=0;
 	for(i=0;i<height+2;i++)
 		{
-			gotoxy(FrameX+2*width+24,FrameY+i);
-			for(j=0;j<width+2;j++)
-    		printf("%d",a[i][j]);		
+			gotoxy(FrameX+2*width+36,FrameY+i);
+			for(j=0;j<width+2;j++)printf("%2d",a[i][j]);//由于白色值为15要显示清除需要2个字符空间		
 		}
-	 gotoxy(FrameX+3*width+30,FrameY+1);
+	 gotoxy(FrameX+4*width+42,FrameY+1);
 	 printf("flag_old=%2d",flag_old);
-	 gotoxy(FrameX+3*width+30,FrameY+2);
+	 gotoxy(FrameX+4*width+42,FrameY+2);
 	 printf("X=%d",X);
-	 gotoxy(FrameX+3*width+30,FrameY+3);
+	 gotoxy(FrameX+4*width+42,FrameY+3);
 	 printf("Y=%d",Y);
-	 gotoxy(FrameX+3*width+30,FrameY+4);
+	 gotoxy(FrameX+4*width+42,FrameY+4);
 	 printf("Left=%d",left);
-	 gotoxy(FrameX+3*width+30,FrameY+5);
+	 gotoxy(FrameX+4*width+42,FrameY+5);
 	 printf("Right=%d",right);
-	 gotoxy(FrameX+3*width+30,FrameY+6);
+	 gotoxy(FrameX+4*width+42,FrameY+6);
 	 printf("Down=%d",down);
-	 gotoxy(FrameX+3*width+30,FrameY+7);
+	 gotoxy(FrameX+4*width+42,FrameY+7);
 	 printf("Trans=%d",trans);
 }
 */
@@ -693,7 +662,7 @@ void Explation()
     gotoxy(18,13);
     printf("tip4: 按空格键暂停游戏，再按空格键继续");
     gotoxy(18,15);
-    printf("tip5: 按ESC退出游戏");
+    printf("tip5: 按ESC退出游戏，按tap键暂停/播放音乐");
     _getch();                //按任意键返回主界面
     system("cls");
     Welcom();
@@ -791,7 +760,9 @@ void Welcom()
 	printf("4.退出");
 	gotoxy(25,18);
 	printf("请选择[1 2 3 4]:");
-    scanf_s("%d", &n);    			//输入选项
+    mciSendString(TEXT("open D:\\Music\\甩葱歌.mp3 alias Song1"), NULL, 0, NULL);
+    mciSendString(TEXT("play Song1 repeat"), NULL, 0, NULL);
+    scanf_s("%d", &n);//输入选项
     switch (n)
     {
     	case 1:GamePlay();break;//游戏开始 
