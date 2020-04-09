@@ -101,7 +101,7 @@ void MakeTetris()
 		case 16:s[1][3]=color4;s[2][2]=color4;s[2][3]=color4;s[3][2]=color4;break;//  ¡ö¡ö
 		
 		case 17:s[1][2]=color4;s[1][3]=color4;s[2][1]=color4;s[2][2]=color4;break;//  ¡ö¡ö
-		case 18:s[1][2]=color4;s[2][2]=color4;s[2][3]=color4;s[3][3]=color4;break;//¡ö¡ö
+		case 18:s[1][1]=color4;s[2][1]=color4;s[2][2]=color4;s[3][2]=color4;break;//¡ö¡ö
 		
 		case 19:s[2][2]=color5;s[2][3]=color5;s[3][2]=color5;s[3][3]=color5;break;//¡ö¡ö
 														      					  //¡ö¡ö
@@ -158,7 +158,7 @@ void CleanOld()
 		case 16:a[Y-1][X+1]=0;a[Y][X]=0;a[Y][X+1]=0;a[Y+1][X]=0;break;//  ¡ö¡ö
 		
 		case 17:a[Y-1][X]=0;a[Y-1][X+1]=0;a[Y][X-1]=0;a[Y][X]=0;break;//  ¡ö¡ö
-		case 18:a[Y-1][X]=0;a[Y][X]=0;a[Y][X+1]=0;a[Y+1][X+1]=0;break;//¡ö¡ö
+		case 18:a[Y-1][X-1]=0;a[Y][X-1]=0;a[Y][X]=0;a[Y+1][X]=0;break;//¡ö¡ö
 		
 		case 19:a[Y][X]=0;a[Y][X+1]=0;a[Y+1][X]=0;a[Y+1][X+1]=0;break;//¡ö¡ö
 														      		  //¡ö¡ö
@@ -225,7 +225,7 @@ for(i=0;i<5;i++)
 		case 16:s[1][3]=color4;s[2][2]=color4;s[2][3]=color4;s[3][2]=color4;break;//  ¡ö¡ö
 		
 		case 17:s[1][2]=color4;s[1][3]=color4;s[2][1]=color4;s[2][2]=color4;break;//  ¡ö¡ö
-		case 18:s[1][2]=color4;s[2][2]=color4;s[2][3]=color4;s[3][3]=color4;break;//¡ö¡ö
+		case 18:s[1][1]=color4;s[2][1]=color4;s[2][2]=color4;s[3][2]=color4;break;//¡ö¡ö
 		
 		case 19:s[2][2]=color5;s[2][3]=color5;s[3][2]=color5;s[3][3]=color5;break;//¡ö¡ö
 														      					  //¡ö¡ö	
@@ -324,10 +324,10 @@ switch(flag_old)
 				if(a[Y+1][X-1]==0&&a[Y+1][X]==0&&a[Y][X+1]==0)down=1;else down=0;
 				if(a[Y][X+1]==0&&a[Y+1][X+1]==0)trans=1;else trans=0;
 				break;
-		case 18:if(a[Y-1][X-1]==0&&a[Y][X-1]==0&&a[Y+1][X]==0)left=1;else left=0;						//¡ö
-				if(a[Y-1][X+1]==0&&a[Y][X+2]==0&&a[Y+1][X+2]==0)right=1;else right=0;					//¡ö¡ö
-				if(a[Y+1][X]==0&&a[Y+2][X+1]==0)down=1;else down=0;										//  ¡ö
-				if(a[Y+1][X-1]==0&&a[Y+1][X]==0)trans=1;else trans=0;
+		case 18:if(a[Y-1][X-2]==0&&a[Y][X-2]==0&&a[Y+1][X-1]==0)left=1;else left=0;						//¡ö
+				if(a[Y-1][X+1]==0&&a[Y][X+1]==0&&a[Y+1][X+1]==0)right=1;else right=0;					//¡ö¡ö
+				if(a[Y+1][X-1]==0&&a[Y+2][X]==0)down=1;else down=0;										//  ¡ö
+				if(a[Y-1][X]==0&&a[Y-1][X+1]==0)trans=1;else trans=0;
 				break;
 		case 19:if(a[Y][X-1]==0&&a[Y+1][X-1]==0)left=1;else left=0;										//¡ö¡ö
 				if(a[Y][X+2]==0&&a[Y+1][X+2]==0)right=1;else right=0;									//¡ö¡ö
@@ -524,7 +524,7 @@ int i=0,j=0,temp[5][5];
 		case 16:temp[1][3]=color4;temp[2][2]=color4;temp[2][3]=color4;temp[3][2]=color4;break;//  ¡ö¡ö
 		
 		case 17:temp[1][2]=color4;temp[1][3]=color4;temp[2][1]=color4;temp[2][2]=color4;break;//  ¡ö¡ö
-		case 18:temp[1][2]=color4;temp[2][2]=color4;temp[2][3]=color4;temp[3][3]=color4;break;//¡ö¡ö
+		case 18:temp[1][1]=color4;temp[2][1]=color4;temp[2][2]=color4;temp[3][2]=color4;break;//¡ö¡ö
 		
 		case 19:temp[2][2]=color5;temp[2][3]=color5;temp[3][2]=color5;temp[3][3]=color5;break;//¡ö¡ö
 																		  					  //¡ö¡ö	
