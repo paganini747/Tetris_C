@@ -26,7 +26,7 @@ int Y = StartY;//中心方块纵坐标
 int Line = 0;//消除的行数 
 int Level = 1;//等级
 int Score = 0;//积分
-int Music=1;
+int Music = 1;
 clock_t start_t, end_t;//获取系统时间 
 
 void GameOver();
@@ -87,7 +87,7 @@ void MakeTetris()
     case 16:s[1][3] = 1; s[2][2] = 1; s[2][3] = 1; s[3][2] = 1; break;//  ■■
 
     case 17:s[1][2] = 1; s[1][3] = 1; s[2][1] = 1; s[2][2] = 1; break;//  ■■
-    case 18:s[1][1] = 1; s[2][1] = 1; s[2][2] = 1; s[3][2] = 1; break;//■■
+    case 18:s[1][2] = 1; s[2][2] = 1; s[2][3] = 1; s[3][3] = 1; break;//■■
 
     case 19:s[2][2] = 1; s[2][3] = 1; s[3][2] = 1; s[3][3] = 1; break;//■■
                                                                       //■■
@@ -140,7 +140,7 @@ void CleanOld()
     case 16:a[Y - 1][X + 1] = 0; a[Y][X] = 0; a[Y][X + 1] = 0; a[Y + 1][X] = 0; break;//  ■■
 
     case 17:a[Y - 1][X] = 0; a[Y - 1][X + 1] = 0; a[Y][X - 1] = 0; a[Y][X] = 0; break;//  ■■
-    case 18:a[Y - 1][X - 1] = 0; a[Y][X - 1] = 0; a[Y][X] = 0; a[Y + 1][X] = 0; break;//■■
+    case 18:a[Y - 1][X] = 0; a[Y][X] = 0; a[Y][X + 1] = 0; a[Y + 1][X + 1] = 0; break;//■■
 
     case 19:a[Y][X] = 0; a[Y][X + 1] = 0; a[Y + 1][X] = 0; a[Y + 1][X + 1] = 0; break;//■■
                                                                                       //■■
@@ -206,7 +206,8 @@ void Transform()
     case 16:s[1][3] = 1; s[2][2] = 1; s[2][3] = 1; s[3][2] = 1; break;//  ■■
 
     case 17:s[1][2] = 1; s[1][3] = 1; s[2][1] = 1; s[2][2] = 1; break;//  ■■
-    case 18:s[1][1] = 1; s[2][1] = 1; s[2][2] = 1; s[3][2] = 1; break;//■■
+    case 18:s[1][2] = 1; s[2][2] = 1; s[2][3] = 1; s[3][3] = 1; break;//■■
+
 
     case 19:s[2][2] = 1; s[2][3] = 1; s[3][2] = 1; s[3][3] = 1; break;//■■
                                                                       //■■
@@ -226,8 +227,8 @@ void Judge_MoveAndTansform()
         if (a[Y - 1][X] == 0 && a[Y - 1][X + 1] == 0 && a[Y + 1][X] == 0)trans = 1; else trans = 0;
         break;
     case  2:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
-        if (a[Y - 1][X + 2] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;  
-        if (a[Y + 2][X] == 0 && a[Y][X + 1] == 0)down = 1; else down = 0;                                
+        if (a[Y - 1][X + 2] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;
+        if (a[Y + 2][X] == 0 && a[Y][X + 1] == 0)down = 1; else down = 0;
         if (a[Y][X - 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)trans = 1; else trans = 0;
         break;
     case  3:if (a[Y][X - 2] == 0 && a[Y + 1][X] == 0)left = 1; else left = 0;
@@ -240,78 +241,82 @@ void Judge_MoveAndTansform()
         if (a[Y + 2][X - 1] == 0 && a[Y + 2][X] == 0)down = 1; else down = 0;
         if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y][X + 1] == 0)trans = 1; else trans = 0;
         break;
-    case  5:if (a[Y - 1][X - 1] == 0 && a[Y][X - 2] == 0)left = 1; else left = 0;                                        
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0)right = 1; else right = 0;                                    
+    case  5:if (a[Y - 1][X - 1] == 0 && a[Y][X - 2] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0)right = 1; else right = 0;
         if (a[Y + 1][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;
         if (a[Y + 1][X] == 0)trans = 1; else trans = 0;
         break;
-    case  6:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                         
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;                    
-        if (a[Y + 2][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;                                         
+    case  6:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;
+        if (a[Y + 2][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;
         if (a[Y][X - 1] == 0)trans = 1; else trans = 0;
         break;
-    case  7:if (a[Y][X - 2] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                                          
-        if (a[Y][X + 2] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;                                     
+    case  7:if (a[Y][X - 2] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y][X + 2] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;
         if (a[Y + 1][X - 1] == 0 && a[Y + 2][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;
         if (a[Y - 1][X] == 0)trans = 1; else trans = 0;
         break;
-    case  8:if (a[Y - 1][X - 1] == 0 && a[Y][X - 2] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                         
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;                    
-        if (a[Y + 1][X - 1] == 0 && a[Y + 2][X] == 0)down = 1; else down = 0;                                        
+    case  8:if (a[Y - 1][X - 1] == 0 && a[Y][X - 2] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;
+        if (a[Y + 1][X - 1] == 0 && a[Y + 2][X] == 0)down = 1; else down = 0;
         if (a[Y][X + 1] == 0)trans = 1; else trans = 0;
         break;
-    case  9:if (a[Y][X - 2] == 0 && a[Y - 1][X] == 0)left = 1; else left = 0;                                        
-        if (a[Y - 1][X + 2] == 0 && a[Y][X + 2] == 0)right = 1; else right = 0;                                    
+    case  9:if (a[Y][X - 2] == 0 && a[Y - 1][X] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 2] == 0 && a[Y][X + 2] == 0)right = 1; else right = 0;
         if (a[Y + 1][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;
         if (a[Y - 1][X] == 0 && a[Y + 1][X] == 0 && a[Y + 1][X + 1] == 0)trans = 1; else trans = 0;
         break;
-    case 10:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                      
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 2] == 0)right = 1; else right = 0;                    
-        if (a[Y + 2][X] == 0 && a[Y + 2][X + 1] == 0)down = 1; else down = 0;                                        
+    case 10:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 2] == 0)right = 1; else right = 0;
+        if (a[Y + 2][X] == 0 && a[Y + 2][X + 1] == 0)down = 1; else down = 0;
         if (a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0 && a[Y][X + 1] == 0)trans = 1; else trans = 0;
         break;
-    case 11:if (a[Y][X - 2] == 0 && a[Y + 1][X - 2] == 0)left = 1; else left = 0;                                         
-        if (a[Y][X + 2] == 0 && a[Y + 1][X] == 0)right = 1; else right = 0;                                         
+    case 11:if (a[Y][X - 2] == 0 && a[Y + 1][X - 2] == 0)left = 1; else left = 0;
+        if (a[Y][X + 2] == 0 && a[Y + 1][X] == 0)right = 1; else right = 0;
         if (a[Y + 2][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;
         if (a[Y - 1][X - 1] == 0 && a[Y - 1][X] == 0 && a[Y + 1][X] == 0)trans = 1; else trans = 0;
         break;
-    case 12:if (a[Y - 1][X - 2] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                      
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;                    
-        if (a[Y][X - 1] == 0 && a[Y + 2][X] == 0)down = 1; else down = 0;                                         
+    case 12:if (a[Y - 1][X - 2] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;
+        if (a[Y][X - 1] == 0 && a[Y + 2][X] == 0)down = 1; else down = 0;
         if (a[Y - 1][X + 1] == 0 && a[Y][X - 1] == 0 && a[Y][X + 1] == 0)trans = 1; else trans = 0;
         break;
-    case 13:if (a[Y][X - 2] == 0)left = 1; else left = 0;                                                        
+    case 13:if (a[Y][X - 2] == 0)left = 1; else left = 0;
         if (a[Y][X + 3] == 0)right = 1; else right = 0;
         if (a[Y + 1][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y + 1][X + 1] == 0 && a[Y + 1][X + 2] == 0)down = 1; else down = 0;
         if (a[Y - 1][X] == 0 && a[Y + 1][X] == 0 && a[Y + 2][X] == 0)trans = 1; else trans = 0;
         break;
-    case 14:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0 && a[Y + 2][X - 1] == 0)left = 1; else left = 0;        
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0 && a[Y + 2][X + 1] == 0)right = 1; else right = 0;    
-        if (a[Y + 3][X] == 0)down = 1; else down = 0;                                                        
-        if (a[Y][X - 1] == 0 && a[Y][X + 1] == 0 && a[Y][X + 2] == 0)trans = 1; else trans = 0;                        
+    case 14:if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0 && a[Y + 2][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0 && a[Y + 2][X + 1] == 0)right = 1; else right = 0;
+        if (a[Y + 3][X] == 0)down = 1; else down = 0;
+        if (a[Y][X - 1] == 0 && a[Y][X + 1] == 0 && a[Y][X + 2] == 0)trans = 1; else trans = 0;
         break;
-    case 15:if (a[Y - 1][X - 2] == 0 && a[Y][X - 1] == 0)left = 1; else left = 0;                                        
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0)right = 1; else right = 0;                                    
+    case 15:
+        if (a[Y - 1][X - 2] == 0 && a[Y][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0)right = 1; else right = 0;
         if (a[Y][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;
         if (a[Y - 1][X + 1] == 0 && a[Y + 1][X] == 0)trans = 1; else trans = 0;
         break;
-    case 16:if (a[Y - 1][X] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                        
-        if (a[Y - 1][X + 2] == 0 && a[Y][X + 2] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;                    
-        if (a[Y + 2][X] == 0 && a[Y + 1][X + 1] == 0)down = 1; else down = 0;                                        
-        if (a[Y - 1][X - 1] == 0 && a[Y - 1][X] == 0)trans = 1; else trans = 0;
+    case 16:
+        if (a[Y - 1][X] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0) left = 1; else  left = 0;
+        if (a[Y - 1][X + 2] == 0 && a[Y][X + 2] == 0 && a[Y + 1][X + 1] == 0) right = 1; else  right = 0;
+        if (a[Y + 2][X] == 0 && a[Y + 1][X + 1] == 0) down = 1; else  down = 0;
+        if (a[Y - 1][X - 1] == 0 && a[Y - 1][X] == 0) trans = 1; else  trans = 0;
         break;
-    case 17:if (a[Y - 1][X - 1] == 0 && a[Y][X - 2] == 0)left = 1; else left = 0;                                     
-        if (a[Y - 1][X + 2] == 0 && a[Y][X + 1] == 0)right = 1; else right = 0;                                    
-        if (a[Y + 1][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y][X + 1] == 0)down = 1; else down = 0;
-        if (a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)trans = 1; else trans = 0;
+    case 17:
+        if (a[Y - 1][X - 1] == 0 && a[Y][X - 2] == 0) left = 1; else  left = 0;
+        if (a[Y - 1][X + 2] == 0 && a[Y][X + 1] == 0) right = 1; else  right = 0;
+        if (a[Y + 1][X - 1] == 0 && a[Y + 1][X] == 0 && a[Y][X + 1] == 0) down = 1; else  down = 0;
+        if (a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0) trans = 1; else  trans = 0;
         break;
-    case 18:if (a[Y - 1][X - 2] == 0 && a[Y][X - 2] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;            
-        if (a[Y - 1][X + 1] == 0 && a[Y][X + 1] == 0 && a[Y + 1][X + 1] == 0)right = 1; else right = 0;            
-        if (a[Y + 1][X - 1] == 0 && a[Y + 2][X] == 0)down = 1; else down = 0;                            
-        if (a[Y - 1][X] == 0 && a[Y - 1][X + 1] == 0)trans = 1; else trans = 0;
+    case 18:
+        if (a[Y - 1][X - 1] == 0 && a[Y][X - 1] == 0 && a[Y + 1][X] == 0) left = 1; else  left = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X + 2] == 0 && a[Y + 1][X + 2] == 0) right = 1; else  right = 0;
+        if (a[Y + 1][X] == 0 && a[Y + 2][X + 1] == 0) down = 1; else  down = 0;
+        if (a[Y - 1][X + 1] == 0 && a[Y][X - 1] == 0) trans = 1; else  trans = 0;
         break;
-    case 19:if (a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;                                        
-        if (a[Y][X + 2] == 0 && a[Y + 1][X + 2] == 0)right = 1; else right = 0;                                    
+    case 19:if (a[Y][X - 1] == 0 && a[Y + 1][X - 1] == 0)left = 1; else left = 0;
+        if (a[Y][X + 2] == 0 && a[Y + 1][X + 2] == 0)right = 1; else right = 0;
         if (a[Y + 2][X] == 0 && a[Y + 2][X + 1] == 0)down = 1; else down = 0;
         trans = 0;
         break;
@@ -335,9 +340,9 @@ void KeyControl()
         case 77:if (right){ CleanOld(); X++; DrawNew(); }break;//->向右
         case 80:if (down){ CleanOld(); Y++; DrawNew(); }break;//向下
         case 32:getch(); break;//空格键 暂停游戏
-            case 9: Music = -Music;
-                    if(Music>0)mciSendString(TEXT("resume Song1"), NULL, 0, NULL);
-                    else mciSendString(TEXT("pause Song1"), NULL, 0, NULL);break;//tab键 暂停歌曲
+        case 9: Music = -Music;
+            if (Music > 0)mciSendString(TEXT("resume Song1"), NULL, 0, NULL);
+            else mciSendString(TEXT("pause Song1"), NULL, 0, NULL); break;//tab键 暂停歌曲
         case 27:system("cls"); exit(0); break;//ESC键 退出 
         default:break;
         }
@@ -429,7 +434,7 @@ void CleanLine()
         {
             Line++;
             for (k = i; k > 1; k--)
-            for (j = 1; j <=width; j++)a[k][j] = a[k - 1][j];
+            for (j = 1; j <= width; j++)a[k][j] = a[k - 1][j];
             i++;
         }
     }
@@ -503,7 +508,7 @@ void PrintNextTetris()
     case 16:temp[1][3] = 1; temp[2][2] = 1; temp[2][3] = 1; temp[3][2] = 1; break;//  ■■
 
     case 17:temp[1][2] = 1; temp[1][3] = 1; temp[2][1] = 1; temp[2][2] = 1; break;//  ■■
-    case 18:temp[1][1] = 1; temp[2][1] = 1; temp[2][2] = 1; temp[3][2] = 1; break;//■■
+    case 18:temp[1][2] = 1; temp[2][2] = 1; temp[2][3] = 1; temp[3][3] = 1; break;//■■
 
     case 19:temp[2][2] = 1; temp[2][3] = 1; temp[3][2] = 1; temp[3][3] = 1; break;//■■
                                                                                   //■■    
