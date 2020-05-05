@@ -21,19 +21,22 @@ void DrwaGameframe()
     int i = 0;
     GotoXY(FrameX + width - 5, FrameY - 2);
     printf("俄 罗 斯 方 块");
-    GotoXY(FrameX, FrameY);
-    for (i = 0; i < width + 2; i++)printf("■");//打印上横框
-    GotoXY(FrameX, FrameY + height + 1);
-    for (i = 0; i < width + 2; i++)printf("■");//打印下横框
-    for (i = 1; i <= height; i++)
+    for (i = 1; i <= width; i++)
     {
-        GotoXY(FrameX, FrameY + i);
-        printf("■");        	 			    //打印左竖框
+        GotoXY(FrameX + 2 * i, FrameY);//打印上横框
+        printf("■");
+        GotoXY(FrameX + 2 * i, FrameY + height + 1);//打印下横框
+        printf("■");
+        a[height + 1][i] = 1;
     }
-    for (i = 1; i <= height; i++)
+    for (i = 0; i <= height + 1; i++)
     {
-        GotoXY(FrameX + 2 * width + 2, FrameY + i);
-        printf("■");         				     //打印右竖框 
+        GotoXY(FrameX, FrameY + i);//打印左竖框
+        printf("■");
+        GotoXY(FrameX + 2 * width + 2, FrameY + i);//打印右竖框
+        printf("■");
+        a[i][0] = 1;
+        a[i][width + 1] = 1;
     }
     GotoXY(FrameX + 2 * width + 8, FrameY - 1);
     printf("Level:%d", Level);
