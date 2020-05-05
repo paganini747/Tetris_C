@@ -4,37 +4,53 @@
 #include"background.h"
 #include"mytetris.h"
 #include"myconsole.h"
-extern Level;
-extern Score;
-extern Line;
 #define FrameX  16  //游戏窗口左上角的X轴坐标
 #define FrameY  4  //游戏窗口左上角的Y轴坐标
 #define height  20 //游戏窗口的高度
 #define width   20//游戏窗口的宽度
 #define StartX  1+width/2//俄罗斯方块中心出现位置横坐标 
 #define StartY  2//俄罗斯方块中心出现位置纵坐标 
+/*
+黑色=0     蓝色=1      绿色=2      浅绿色=3
+红色=4     紫色=5      黄色=6      白色=7
+灰色=8     淡蓝色=9    淡绿色=10   单浅绿色=11
+淡红色=12  淡紫色=13   淡黄色=14   亮白色=15
+*/
+#define c1    2 //绿         L形                      
+#define c2    8 //灰         T形                      
+#define c3    15//白      长条形                     
+#define c4    4 //红         Z形                       
+#define c5    1 //蓝      方块形 
+extern Level;
+extern Score;
+extern Line;
+extern a[height + 2][width + 2];
 /****************************************
 * 打印俄罗斯方块边框
 ****************************************/
 void DrwaGameframe()
 {
     int i = 0;
+    Color(15);
     GotoXY(FrameX + width - 5, FrameY - 2);
     printf("俄 罗 斯 方 块");
-    Color(1);
-    GotoXY(FrameX, FrameY);
-    for (i = 0; i < width + 2; i++)printf("■");//打印上横框
-    GotoXY(FrameX, FrameY + height + 1);
-    for (i = 0; i < width + 2; i++)printf("■");//打印下横框
-    for (i = 1; i <= height; i++)
+    Color(5);
+    for (i = 1; i <= width; i++)
     {
-        GotoXY(FrameX, FrameY + i);
-        printf("■");        	 			    //打印左竖框
+        GotoXY(FrameX + 2 * i, FrameY);//打印上横框
+        printf("■");
+        GotoXY(FrameX + 2 * i, FrameY + height + 1);//打印下横框
+        printf("■");
+        a[height + 1][i] = 1;
     }
-    for (i = 1; i <= height; i++)
+    for (i = 0; i <= height + 1; i++)
     {
-        GotoXY(FrameX + 2 * width + 2, FrameY + i);
-        printf("■");         				     //打印右竖框 
+        GotoXY(FrameX, FrameY + i);//打印左竖框
+        printf("■");
+        GotoXY(FrameX + 2 * width + 2, FrameY + i);//打印右竖框
+        printf("■");
+        a[i][0] = 1;
+        a[i][width + 1] = 1;
     }
     GotoXY(FrameX + 2 * width + 8, FrameY - 1);
     printf("Level:%d", Level);
@@ -51,12 +67,39 @@ void FacePlate()
     Color(1);
     printf("\n\n\n");
     printf("                           俄  罗  斯  方  块             \n");
-    printf("\n\n");
-    printf("                  ■                         ■           \n");
-    printf("                  ■■   ■■       ■■     ■         ■\n");
-    printf("                  ■       ■■     ■■     ■     ■■■\n");
-    printf("                                             ■           \n");
-    printf("\n\n");
+    Color(c2);
+    GotoXY(18, 5);
+    printf("■");
+    GotoXY(18, 6);
+    printf("■■");
+    GotoXY(18, 7);
+    printf("■");
+    Color(c4);
+    GotoXY(26, 6);
+    printf("■■");
+    GotoXY(28, 7);
+    printf("■■");
+    Color(c5);
+    GotoXY(36, 6);
+    printf("■■");
+    GotoXY(36, 7);
+    printf("■■");
+    Color(c3);
+    GotoXY(45, 5);
+    printf("■");
+    GotoXY(45, 6);
+    printf("■");
+    GotoXY(45, 7);
+    printf("■");
+    GotoXY(45, 8);
+    printf("■");
+    Color(c1);
+    GotoXY(56, 6);
+    printf("■");
+    GotoXY(52, 7);
+    printf("■■■");
+    Color(1);
+    GotoXY(0, 12);
     printf("                         1.开始游戏   2.按键说明          \n");
     printf("\n\n");
     printf("                         3.游戏规则   4.退出游戏          \n");
